@@ -17,6 +17,7 @@
     "tmp-promise": "^3.0.2"
   },
   "devDependencies": {
+    "@netlify/plugin-nextjs-experimental": "^0.0.5",
     "eslint": "8.0.0",
     "eslint-config-next": "11.1.2"
   }
