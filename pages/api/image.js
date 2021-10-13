@@ -10,10 +10,9 @@ export default async function handler(req, res) {
   });
 
   const file = await tmp.file();
-  await fs.writeFile(file.path, '<html><body><h1>Hello world!</h1></body></html>');
+  await fs.writeFile(file.path, 'Hello world');
 
   const page = await browser.newPage();
-  // Wait until there are no network connexion for 500ms
   await page.goto(`file:///${file.path}`, {waitUntil: [
     'networkidle0', 'domcontentloaded', 'load'
   ]});
