@@ -1,8 +1,2 @@
 [functions]
   node_bundler = "esbuild"
-
-[build]
-  publish = ".next"
-
-[[plugins]]
-  package = "@netlify/plugin-nextjs-experimental"
