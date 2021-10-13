@@ -1,6 +1,6 @@
 import chromium from 'chrome-aws-lambda';
 import tmp from 'tmp-promise';
-import fs from 'fs/promises';
+import { promises as fs } from 'fs';
 
 export default async function handler(req, res) {
   const browser = await chromium.puppeteer.launch({
