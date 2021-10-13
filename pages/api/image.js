@@ -1,5 +1,6 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import chromium from 'chrome-aws-lambda';
+import tmp from 'tmp-promise';
+import fs from 'fs/promises';
 
 export default async function handler(req, res) {
   const browser = await chromium.puppeteer.launch({
@@ -8,5 +9,21 @@ export default async function handler(req, res) {
     headless: chromium.headless
   });
 
-  res.status(200).json({ name: 'John Doe' })
+  const file = await tmp.file();
+  await fs.writeFile(file, '<html><body><h1>Hello world!</h1></body></html>');
+
+  const page = await browser.newPage();
+  // Wait until there are no network connexion for 500ms
+  await page.goto(`file:///${file}`, {waitUntil: [
+    'networkidle0', 'domcontentloaded', 'load'
+  ]});
+  const image = await page.screenshot({
+    type: 'jpeg'
+  });
+
+  await browser.close();
+
+  var img = Buffer.from(image, 'base64');
+
+  res.status(200).setHeader('Content-Type', 'image/jpg').end(img);
 }
